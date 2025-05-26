@@ -15,7 +15,6 @@ import org.springframework.context.ApplicationContext;
 
 import com.example.entity.Message;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class RetrieveMessageByMessageIdTest {
 	ApplicationContext app;
     HttpClient webClient;
