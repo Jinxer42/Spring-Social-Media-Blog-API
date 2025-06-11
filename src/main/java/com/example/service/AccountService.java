@@ -54,4 +54,11 @@ public class AccountService {
         return matchedAccounts.get(0);
 
     }
+
+
+    public boolean doesAccountExist(Integer postedBy) {
+        // TODO Auto-generated method stub
+        return accountRepository.existsById(postedBy);
+        //throw new UnsupportedOperationException("Unimplemented method 'doesAccountExist'");
+    }
 }

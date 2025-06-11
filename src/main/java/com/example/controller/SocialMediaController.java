@@ -46,6 +46,10 @@ public class SocialMediaController {
     public ResponseEntity<Message> postMessage(@RequestBody Message inMessage)
     {
         try{
+            if (!accountService.doesAccountExist(inMessage.getPostedBy()))
+            {
+                throw new Exception ("User for that message is not registered");
+            }
             return ResponseEntity.status(200).body(messageService.postMessage(inMessage));
         }
         catch(Exception e)
