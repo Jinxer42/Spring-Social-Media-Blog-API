@@ -85,6 +85,7 @@ As a User, I should be able to submit a DELETE request on the endpoint DELETE lo
 
 - The deletion of an existing message should remove an existing message from the database. If the message existed, the response body should contain the number of rows updated (1). The response status should be 200, which is the default.
 - If the message did not exist, the response status should be 200, but the response body should be empty. This is because the DELETE verb is intended to be idempotent, ie, multiple calls to the DELETE endpoint should respond with the same type of response.
+Note (Curtis Heyda 2025-06-13): Why should the response be empty? Should not the response be 0, the number of rows changed? This would both make more sense AND make the code cleaner. Furthermore, since a maxiuum of only 1 row can be deleted (due to unique IDs) it might even make more sense to return a boolean instead.
 
 ## 7: Our API should be able to update a message text identified by a message ID.
 

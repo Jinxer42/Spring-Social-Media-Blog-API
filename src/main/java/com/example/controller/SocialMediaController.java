@@ -1,10 +1,6 @@
 package com.example.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,8 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-
 import com.example.entity.*;
 import com.example.exception.DuplicateUserException;
 import com.example.service.*;
@@ -31,7 +25,6 @@ import com.example.service.*;
 @RestController
 public class SocialMediaController {
 
-
     private final MessageService messageService;
     private final AccountService accountService;
 
@@ -45,11 +38,10 @@ public class SocialMediaController {
     @PostMapping("/messages")
     public ResponseEntity<Message> postMessage(@RequestBody Message inMessage)
     {
-        try{
-            if (!accountService.doesAccountExist(inMessage.getPostedBy()))
-            {
-                throw new Exception ("User for that message is not registered");
-            }
+        try
+        {
+            //If the user posting this does not exist it will throw a ConstraintViolationException, 
+            //so we don't need to check for this manually.
             return ResponseEntity.status(200).body(messageService.postMessage(inMessage));
         }
         catch(Exception e)
@@ -67,31 +59,27 @@ public class SocialMediaController {
     @GetMapping("/messages/{messageId}")
     public ResponseEntity<Message> getMessageById(@PathVariable Integer messageId)
     {
-
         return ResponseEntity.status(200).body(messageService.getMessageById(messageId));
     }
 
     @DeleteMapping("/messages/{messageId}")
-    public ResponseEntity<String> deleteMessage(@PathVariable Integer messageId)
+    public ResponseEntity<Integer> deleteMessage(@PathVariable Integer messageId)
     {
-        int countDeleted=messageService.deleteMessage(messageId);
-        if (countDeleted==0)
-        {
-            return ResponseEntity.status(200).body("");
-        }
-        return ResponseEntity.status(200).body("" +countDeleted);
+        return ResponseEntity.status(200).body(messageService.deleteMessage(messageId));
     }
 
     @PatchMapping("/messages/{messageId}")
-    public ResponseEntity<String> updateMessage(@RequestBody Message message, @PathVariable Integer messageId)
+    public ResponseEntity<Integer> updateMessage(@RequestBody Message message, @PathVariable Integer messageId)
     {
-        try{
-        messageService.updateMessage(message,messageId);
-        return ResponseEntity.status(200).body(""+1);
+        try
+        {
+            messageService.updateMessage(message,messageId);
+            return ResponseEntity.status(200).body(1);
         }
         catch(Exception e)
         {
-            return ResponseEntity.status(400).body("");
+            //Do as build() instead of body(null) to diversify. 
+            return ResponseEntity.status(400).build();
         }
         
     }
@@ -122,7 +110,8 @@ public class SocialMediaController {
     @PostMapping("/login")
     public ResponseEntity<Account> loginAccount(@RequestBody Account inAccount)
     {
-        try{
+        try
+        {
             return ResponseEntity.status(200).body(accountService.loginAccount(inAccount));
         }
         catch(Exception e)

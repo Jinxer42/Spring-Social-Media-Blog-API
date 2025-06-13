@@ -1,12 +1,9 @@
 package com.example.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
 
@@ -33,12 +30,12 @@ public class MessageService {
     public List<Message> getAllMessages() {
         return messageRepository.findAll();
     }
-    public int deleteMessage(Integer messageId) {
+    public Integer deleteMessage(Integer messageId) {
         
         
         if(getMessageById(messageId)==null)
         {
-            return 0;
+            return null;
         }
         messageRepository.deleteById(messageId);
         return 1;
